@@ -1,29 +1,210 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Html } from '@react-three/drei';
+import { Physics, useBox, useSphere, usePlane } from '@react-three/cannon';
 import './Quiz.css'
 import useQuizStore from '../../stores/use-quiz-store';
 import { useAuth } from '../../contexts/SupabaseAuthContext';
 import { saveQuizResult, testDatabaseConnection } from '../../services/supabaseQuizService';
 
-// 3D Liver Progress Model Component
-function LiverProgressModel({ correctAnswers, totalQuestions }) {
+// Green Ball Component with Physics
+function GreenBall({ position, onCollision, onGroundCollision }) {
+    const [ref, api] = useSphere(() => ({
+        mass: 1,
+        position: position,
+        material: { friction: 0.3, restitution: 0.6 },
+        onCollide: (event) => {
+            // Check if collision is with the ground plane by checking the contact normal
+            const contactNormal = event.contact.ni;
+            // Ground plane has normal pointing up [0, 1, 0]
+            if (Math.abs(contactNormal.y) > 0.8) {
+                onGroundCollision();
+            } else {
+                onCollision(event);
+            }
+        }
+    }));
+
+    useEffect(() => {
+        // Apply initial velocity to make the ball move towards the liver
+        // More targeted approach - aim toward the liver center
+        const targetX = 0; // Liver is at center
+        const targetZ = 0; // Liver is at center
+        const currentX = position[0];
+        const currentZ = position[2];
+        
+        // Calculate direction toward liver with some randomness
+        const directionX = (targetX - currentX) + (Math.random() - 0.5) * 1;
+        const directionZ = (targetZ - currentZ) + (Math.random() - 0.5) * 1;
+        
+        api.velocity.set(
+            directionX * 1.5, // X velocity toward liver
+            -3, // Stronger downward Y velocity
+            directionZ * 1.5  // Z velocity toward liver
+        );
+
+        // Fallback timeout to remove ball if no collision detected after 5 seconds
+        const fallbackTimeout = setTimeout(() => {
+            onGroundCollision();
+        }, 5000);
+
+        return () => clearTimeout(fallbackTimeout);
+    }, [api, position, onGroundCollision]);
+
+    return (
+        <mesh ref={ref}>
+            <sphereGeometry args={[0.3]} />
+            <meshStandardMaterial 
+                color="#22C55E" 
+                emissive="#16A34A"
+                emissiveIntensity={0.3}
+                metalness={0.2}
+                roughness={0.1}
+            />
+        </mesh>
+    );
+}
+
+// Red Ball Component with Physics for incorrect answers
+function RedBall({ position, onCollision, onGroundCollision }) {
+    const [ref, api] = useSphere(() => ({
+        mass: 1,
+        position: position,
+        material: { friction: 0.3, restitution: 0.6 },
+        onCollide: (event) => {
+            // Check if collision is with the ground plane by checking the contact normal
+            const contactNormal = event.contact.ni;
+            // Ground plane has normal pointing up [0, 1, 0]
+            if (Math.abs(contactNormal.y) > 0.8) {
+                onGroundCollision();
+            } else {
+                onCollision(event);
+            }
+        }
+    }));
+
+    useEffect(() => {
+        // Apply initial velocity to make the ball move towards the liver
+        // More targeted approach - aim toward the liver center
+        const targetX = 0; // Liver is at center
+        const targetZ = 0; // Liver is at center
+        const currentX = position[0];
+        const currentZ = position[2];
+        
+        // Calculate direction toward liver with some randomness
+        const directionX = (targetX - currentX) + (Math.random() - 0.5) * 1;
+        const directionZ = (targetZ - currentZ) + (Math.random() - 0.5) * 1;
+        
+        api.velocity.set(
+            directionX * 1.5, // X velocity toward liver
+            -3, // Stronger downward Y velocity
+            directionZ * 1.5  // Z velocity toward liver
+        );
+
+        // Fallback timeout to remove ball if no collision detected after 5 seconds
+        const fallbackTimeout = setTimeout(() => {
+            onGroundCollision();
+        }, 5000);
+
+        return () => clearTimeout(fallbackTimeout);
+    }, [api, position, onGroundCollision]);
+
+    return (
+        <mesh ref={ref}>
+            <sphereGeometry args={[0.3]} />
+            <meshStandardMaterial 
+                color="#EF4444" 
+                emissive="#DC2626"
+                emissiveIntensity={0.3}
+                metalness={0.2}
+                roughness={0.1}
+            />
+        </mesh>
+    );
+}
+
+// Physics Liver Model Component
+function PhysicsLiverModel({ correctAnswers, totalQuestions, showBall, onBallCollision }) {
     const progressPercentage = (correctAnswers / totalQuestions) * 100;
-    
-    // Always use healthy liver model
     const { scene } = useGLTF("/modelos/Liver/healthy-liver.glb");
     
-    // Calculate opacity based on correct answers (starts at 10%, increases 22.5% per correct answer)
+    // Physics body for the liver model
+    const [liverRef] = useBox(() => ({
+        mass: 0, // Static body
+        position: [0, 0, 0],
+        args: [4, 3, 3], // Larger collision box for easier hits
+        onCollide: onBallCollision
+    }));
+
+    // Apply opacity based on correct answers
     const opacity = correctAnswers === 0 ? 0.1 : Math.min(0.1 + (correctAnswers / totalQuestions) * 0.9, 1.0);
 
-    // Apply opacity to all materials in the model
-    scene.traverse((child) => {
-        if (child.isMesh && child.material) {
-            child.material.transparent = true;
-            child.material.opacity = opacity;
-            child.material.needsUpdate = true;
-        }
-    });
+    // Ensure the scene exists before traversing
+    if (scene) {
+        scene.traverse((child) => {
+            if (child.isMesh && child.material) {
+                child.material.transparent = true;
+                child.material.opacity = opacity;
+                child.material.needsUpdate = true;
+                // Ensure the material is properly configured
+                if (child.material.map) {
+                    child.material.map.needsUpdate = true;
+                }
+            }
+        });
+    }
+
+    return (
+        <>
+            {/* Invisible physics body for collision detection */}
+            <mesh ref={liverRef} visible={false}>
+                <boxGeometry args={[4, 3, 3]} />
+                <meshBasicMaterial transparent opacity={0} />
+            </mesh>
+            
+            {/* Visible liver model */}
+            {scene ? (
+                <primitive 
+                    object={scene} 
+                    scale={18} 
+                    position={[0, 0, 0]}
+                    rotation={[0, 0, 0]}
+                />
+            ) : (
+                // Fallback if model doesn't load
+                <mesh position={[0, 0, 0]}>
+                    <sphereGeometry args={[1.5]} />
+                    <meshStandardMaterial 
+                        color="#8B4513" 
+                        transparent 
+                        opacity={opacity}
+                    />
+                </mesh>
+            )}
+        </>
+    );
+}
+
+// Ground plane for physics
+function Ground({ onGroundCollision }) {
+    const [ref] = usePlane(() => ({
+        rotation: [-Math.PI / 2, 0, 0],
+        position: [0, -3, 0],
+        material: { friction: 0.4, restitution: 0.1 },
+        onCollide: onGroundCollision
+    }));
+
+    return (
+        <mesh ref={ref}>
+            <planeGeometry args={[50, 50]} />
+            <meshBasicMaterial transparent opacity={0} />
+        </mesh>
+    );
+}
+
+// 3D Liver Progress Model Component with Physics
+function LiverProgressModel({ correctAnswers, totalQuestions, showBall, ballType, onBallCollision, onGroundCollision }) {
+    const progressPercentage = (correctAnswers / totalQuestions) * 100;
 
     return (
         <>
@@ -53,16 +234,35 @@ function LiverProgressModel({ correctAnswers, totalQuestions }) {
                     </div>
                 </Html>
             ) : (
-                // Liver model with progress circle
                 <>
-                    <primitive 
-                        object={scene} 
-                        scale={18} 
-                        position={[0, 0, 0]}
-                        rotation={[0, Math.PI / 4, 0]}
+                    <PhysicsLiverModel 
+                        correctAnswers={correctAnswers} 
+                        totalQuestions={totalQuestions}
+                        showBall={showBall}
+                        onBallCollision={onBallCollision}
                     />
                     
-                    {/* Progress circle only */}
+                    {/* Ball that appears when answer is selected */}
+                    {showBall && ballType === 'green' && (
+                        <GreenBall 
+                            position={[Math.random() * 2 - 1, 4, Math.random() * 2 - 1]}
+                            onCollision={onBallCollision}
+                            onGroundCollision={onGroundCollision}
+                        />
+                    )}
+                    
+                    {showBall && ballType === 'red' && (
+                        <RedBall 
+                            position={[Math.random() * 2 - 1, 4, Math.random() * 2 - 1]}
+                            onCollision={onBallCollision}
+                            onGroundCollision={onGroundCollision}
+                        />
+                    )}
+                    
+                    {/* Ground for physics */}
+                    <Ground onGroundCollision={onGroundCollision} />
+                    
+                    {/* Progress circle */}
                     <Html position={[0, 1.5, 0]} center>
                         <div className="liver-progress-indicator">
                             <div className="progress-circle">
@@ -97,6 +297,9 @@ const Quiz = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [savingResult, setSavingResult] = useState(false);
     const [resultSaved, setResultSaved] = useState(false);
+    const [showBall, setShowBall] = useState(false);
+    const [ballType, setBallType] = useState('green'); // 'green' or 'red'
+    const ballTimeoutRef = useRef(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -105,6 +308,15 @@ const Quiz = () => {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Cleanup ball timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (ballTimeoutRef.current) {
+                clearTimeout(ballTimeoutRef.current);
+            }
+        };
     }, []);
 
     // Test database connection on component mount
@@ -242,6 +454,28 @@ const Quiz = () => {
         }
     ];
 
+    // Handle ball collision with liver or ground
+    const handleBallCollision = useCallback((event) => {
+        if (ballType === 'green') {
+            console.log('🟢 Green ball hit the liver! Correct answer!');
+        } else {
+            console.log('🔴 Red ball hit the liver! Incorrect answer!');
+        }
+        // Hide the ball after collision with a slight delay for visual effect
+        setTimeout(() => {
+            setShowBall(false);
+        }, 500);
+    }, [ballType]);
+
+    // Handle ground collision - balls disappear when they hit the ground
+    const handleGroundCollision = useCallback(() => {
+        console.log('⚫ Ball hit the ground');
+        // Hide the ball when it hits the ground
+        setTimeout(() => {
+            setShowBall(false);
+        }, 200);
+    }, []);
+
     const handleAnswerSelect = (answerIndex) => {
         setSelectedAnswer(answerIndex);
         
@@ -262,6 +496,15 @@ const Quiz = () => {
             setCorrectAnswersCount(prev => prev + 1);
         }
 
+        // Show appropriate ball based on answer correctness
+        setBallType(isCorrect ? 'green' : 'red');
+        setShowBall(true);
+        
+        // Clear any existing timeout
+        if (ballTimeoutRef.current) {
+            clearTimeout(ballTimeoutRef.current);
+        }
+
         // Update quiz progress
         incrementQuizProgress();
     };
@@ -269,11 +512,18 @@ const Quiz = () => {
     const handleNextQuestion = useCallback(() => {
         if (selectedAnswer === null) return;
 
+        // Clear ball timeout
+        if (ballTimeoutRef.current) {
+            clearTimeout(ballTimeoutRef.current);
+        }
+
         // Move to next question only when "Siguiente" is clicked
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(prev => prev + 1);
             setSelectedAnswer(null);
             setShowExplanation(false);
+            setShowBall(false); // Reset ball state for next question
+            setBallType('green'); // Reset ball type
         } else {
             setQuizCompleted(true);
             // Save quiz results if user is logged in
@@ -365,6 +615,11 @@ const Quiz = () => {
     };
 
     const restartQuiz = () => {
+        // Clear ball timeout
+        if (ballTimeoutRef.current) {
+            clearTimeout(ballTimeoutRef.current);
+        }
+        
         setCurrentQuestion(0);
         setSelectedAnswer(null);
         setShowExplanation(false);
@@ -373,6 +628,8 @@ const Quiz = () => {
         setCorrectAnswersCount(0);
         setSavingResult(false);
         setResultSaved(false);
+        setShowBall(false);
+        setBallType('green');
         clearQuiz();
     };
 
@@ -610,21 +867,26 @@ const Quiz = () => {
                                 boxShadow: "0 0 25px rgba(245, 177, 76, 0.7)",
                                 overflow: "hidden"
                             }}
-                            camera={{ position: [0, 2, 12], fov: 35 }}
+                            camera={{ position: [0, 2, 12], fov: 50 }}
                             gl={{ alpha: true, antialias: true }}
                         >
                             <OrbitControls 
                                 enableZoom={false} 
                                 enablePan={false}
-                                autoRotate={true}
-                                autoRotateSpeed={2}
+                                autoRotate={false}
                                 maxPolarAngle={Math.PI / 2}
                                 minPolarAngle={Math.PI / 3}
                             />
-                            <LiverProgressModel 
-                                correctAnswers={correctAnswersCount} 
-                                totalQuestions={questions.length} 
-                            />
+                            <Physics gravity={[0, -9.81, 0]} iterations={15} tolerance={0.0001}>
+                                <LiverProgressModel 
+                                    correctAnswers={correctAnswersCount} 
+                                    totalQuestions={questions.length}
+                                    showBall={showBall}
+                                    ballType={ballType}
+                                    onBallCollision={handleBallCollision}
+                                    onGroundCollision={handleGroundCollision}
+                                />
+                            </Physics>
                         </Canvas>
                     </div>
 

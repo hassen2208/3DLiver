@@ -16,6 +16,7 @@ import ViralHepatitis from './pages/liver/viral-hepatitis/ViralHepatitis'
 import Layout from './layout/Layout'
 import LiverCirrhosis from './pages/liver/liver-cirrhosis/LiverCirrhosis'
 import FattyLiver from './pages/liver/fatty-liver/FattyLiver'
+import Diseases from './pages/diseases/Diseases'
 import Login from './pages/auth/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './contexts/SupabaseAuthContext'
@@ -48,6 +49,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path='contacto' element={<Contact/>}/>
                 <Route path='recursos' element={<Resources/>}/>
                 <Route path='sobre-nosotros' element={<AboutUs/>}/>
+                <Route path='enfermedades' element={<Diseases/>}/>
                 <Route path='higado' element = {<Liver/>}/>
                 <Route path='higado/cancer-higado' element = {<LiverCancer/>}/>
                 <Route path='higado/hepatitis-viral' element = {<ViralHepatitis/>}/>
