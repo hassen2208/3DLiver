@@ -1,0 +1,284 @@
+/* Treatment Stage Container */
+.treatment-stage-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(135deg, #f0fff0 0%, #e8f5e8 100%);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+/* Specialized Treatment Message */
+.specialized-treatment-message {
+  pointer-events: auto;
+  user-select: none;
+  z-index: 1000;
+  max-width: 420px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(76, 175, 80, 0.2);
+  border: 3px solid rgba(144, 238, 144, 0.3);
+  overflow: hidden;
+  animation: treatmentGlow 3s ease-in-out infinite alternate;
+}
+
+.treatment-header {
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+  padding: 18px 24px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.header-icon {
+  font-size: 24px;
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+.treatment-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.close-treatment-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-treatment-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.treatment-body {
+  padding: 24px;
+}
+
+.main-treatment-text {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0fff0 100%);
+  border-radius: 15px;
+  border: 2px solid rgba(144, 238, 144, 0.3);
+  position: relative;
+}
+
+.main-treatment-text::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #4CAF50, #66BB6A, #81C784, #4CAF50);
+  border-radius: 15px;
+  z-index: -1;
+  animation: borderFlow 3s linear infinite;
+}
+
+.main-treatment-text h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #1B5E20;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(76, 175, 80, 0.1);
+}
+
+.treatment-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(144, 238, 144, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(144, 238, 144, 0.2);
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2E7D32;
+}
+
+.benefit-item:hover {
+  background: rgba(144, 238, 144, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.15);
+}
+
+.benefit-icon {
+  font-size: 20px;
+  min-width: 24px;
+}
+
+.treatment-success-rate {
+  text-align: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #C8E6C9 0%, #E8F5E8 100%);
+  border-radius: 12px;
+  border: 2px solid #4CAF50;
+  position: relative;
+  overflow: hidden;
+}
+
+.treatment-success-rate::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+.success-text {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1B5E20;
+  position: relative;
+  z-index: 1;
+}
+
+/* Healing Particles */
+.healing-particle {
+  color: #4CAF50;
+  font-size: 24px;
+  font-weight: bold;
+  animation: floatHeal 4s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Animations */
+@keyframes treatmentGlow {
+  0% {
+    box-shadow: 0 15px 35px rgba(76, 175, 80, 0.2);
+  }
+  100% {
+    box-shadow: 0 20px 45px rgba(76, 175, 80, 0.4);
+  }
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes floatHeal {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateY(-10px) rotate(5deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-5px) rotate(-3deg);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-15px) rotate(2deg);
+    opacity: 0.9;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .specialized-treatment-message {
+    max-width: 320px;
+  }
+  
+  .treatment-header {
+    padding: 15px 18px;
+  }
+  
+  .header-icon {
+    font-size: 20px;
+  }
+  
+  .treatment-header h2 {
+    font-size: 16px;
+  }
+  
+  .treatment-body {
+    padding: 18px;
+  }
+  
+  .main-treatment-text {
+    padding: 16px;
+    margin-bottom: 18px;
+  }
+  
+  .main-treatment-text h3 {
+    font-size: 14px;
+  }
+  
+  .treatment-benefits {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .benefit-item {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .benefit-icon {
+    font-size: 18px;
+    min-width: 20px;
+  }
+  
+  .healing-particle {
+    font-size: 20px;
+  }
+}

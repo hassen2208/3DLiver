@@ -1,0 +1,261 @@
+.main-content-area {
+    flex-grow: 1;
+    padding: 2rem;
+    background-color: #F8F8F8;
+}
+
+.breadcrumbs {
+    display: flex;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.breadcrumbs a {
+    color: #1976D2;
+    text-decoration: none;
+    padding-left: 0.5rem;
+}
+
+.breadcrumbs span {
+    color: #333;
+    padding-left: 0.5rem;
+}
+
+.stats-section {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 150px;
+    min-height: 200px;
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    color: #555;
+}
+
+.stat-card p {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2a5c82;
+}
+
+.model-display-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+    height: 400px;
+    background-color: #E0E0E0;
+    border-radius: 8px;
+    box-shadow:  0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.liver-model-placeholder {
+    color: #555;
+    font-size: 1.2rem;
+}
+
+.disease-cards-section {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.disease-cards-section h2 {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.disease-card {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 90%;
+    flex: 1;
+    min-width: 150px;
+    min-height: 200px;
+}
+
+.disease-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.disease-card p {
+    margin: 0;
+    padding-top: 80px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+
+/* Responsive */
+
+/* Para pantallas de tablet */
+@media (max-width: 1024px) {
+    .main-content-area {
+        padding: 1.5rem; /
+    }
+
+    .breadcrumbs {
+        font-size: 0.85rem;
+    }
+
+    .stats-section {
+        gap: 0.8rem;
+    }
+
+    .stat-card {
+        padding: 1.2rem;
+        min-width: 120px;
+        max-width: 200px;
+        font-size: 0.95rem;
+    }
+    .stat-card h3 {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+    .stat-card p {
+        font-size: 1.5rem;
+    }
+
+    .model-display-section {
+        height: 350px;
+        margin-bottom: 2rem;
+    }
+
+    .disease-cards-section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.2rem;
+    }
+
+    .disease-card {
+        padding: 1.2rem;
+        min-height: 120px;
+        font-size: 1rem;
+    }
+    .disease-card p {
+        font-size: 1rem;
+    }
+}
+
+/* Para pantallas de móviles */
+@media (max-width: 768px) {
+    .main-content-area {
+        padding: 1rem;
+    }
+
+    .breadcrumbs {
+        font-size: 0.8rem;
+    }
+
+    .stats-section {
+        flex-direction: column; 
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+        width: 90%;
+        max-width: 300px; 
+        padding: 1rem;
+        min-height: auto;
+        justify-content: space-between;
+        flex-direction: row;
+    }
+    .stat-card h3 {
+        margin-bottom: 0;
+        font-size: 0.9rem;
+    }
+    .stat-card p {
+        font-size: 1.4rem;
+    }
+
+    .model-display-section {
+        display: none; 
+    }
+
+    .disease-cards-section h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        place-content: center;
+    }
+
+    .disease-card {
+        padding: 1rem;
+        min-height: 100px;
+        font-size: 0.95rem;
+        width: 80%;
+    }
+    .disease-card p {
+        font-size: 0.95rem;
+    }
+}
+
+/* Para móviles muy pequeños (Ancho máximo de 480px) */
+@media (max-width: 480px) {
+    .main-content-area {
+        padding: 0.8rem;
+    }
+
+    .stat-card {
+        padding: 0.8rem;
+        font-size: 0.85rem;
+    }
+    .stat-card h3 {
+        font-size: 0.8rem;
+    }
+    .stat-card p {
+        font-size: 1.2rem;
+    }
+
+    .disease-cards-section h2 {
+        font-size: 1.1rem;
+    }
+
+    .disease-card p {
+        font-size: 0.9rem;
+    }
+}

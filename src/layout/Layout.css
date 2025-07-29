@@ -1,0 +1,36 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+
+.layout-content {
+  text-align: center;
+  width: 100%;
+  flex: 1;
+}
+
+/* Mantener Fijo a sidebar */
+.sidebar {
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+/* Mantener fijo a el header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}

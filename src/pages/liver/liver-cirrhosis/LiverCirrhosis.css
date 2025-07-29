@@ -1,0 +1,542 @@
+/* Estilos base para la página de Cirrosis Hepática */
+.liver-cirrhosis-container {
+  padding: 2rem;
+  text-align: center;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.cirrhosis-breadcrumbs {
+  display: flex;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.cirrhosis-breadcrumbs a {
+  color: #1976d2;
+  text-decoration: none;
+  padding-left: 0.5rem;
+}
+
+.cirrhosis-breadcrumbs span {
+  color: #333;
+  padding-left: 0.5rem;
+}
+
+.cirrhosis-title {
+  font-size: 2rem;
+  color: #2a5c82;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.cirrhosis-toggle-container {
+  display: flex;
+  gap: 12px;
+  padding-top: 20px;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.cirrhosis-toggle-button {
+  background-color: #2a5c82;
+  color: white;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: large;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  max-width: 220px;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(42, 92, 130, 0.2);
+}
+
+.cirrhosis-toggle-button:hover {
+  background-color: #1e4460;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(42, 92, 130, 0.3);
+}
+
+.cirrhosis-toggle-button.active {
+  background-color: #1e4460;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 68, 96, 0.3);
+}
+
+.button-icon {
+  font-size: 1.2em;
+}
+
+.button-text {
+  color: #fff;
+}
+
+.cirrhosis-scroll-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.cirrhosis-scroll-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  border: none;
+  font-weight: 700;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: large;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.cirrhosis-scroll-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.cirrhosis-scroll-button:hover::before {
+  left: 100%;
+}
+
+.cirrhosis-scroll-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+}
+
+.cirrhosis-scroll-button:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.scroll-button-icon {
+  font-size: 1.3em;
+}
+
+.cirrhosis-scroll-button svg {
+  font-size: 1.3em;
+  vertical-align: middle;
+}
+
+.cirrhosis-model-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 1rem;
+  position: relative;
+}
+
+.cirrhosis-model-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cirrhosis-instructions-help-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.cirrhosis-help-icon {
+  position: relative;
+  z-index: 11;
+  pointer-events: all;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2a5c82;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  padding: 0;
+  transition: transform 0.2s ease-in-out;
+}
+
+.cirrhosis-help-icon:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cirrhosis-instructions-popover {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  max-width: 280px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.cirrhosis-instructions-popover p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.cirrhosis-help-icon svg {
+  width: 26px;
+  height: 26px;
+  color: #4a5568;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cirrhosis-lesson-section {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 3rem 2rem;
+  text-align: left;
+  max-width: 1200px;
+  margin: 3rem auto 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos del contenido de las lecciones */
+.lesson-content {
+  line-height: 1.8;
+}
+
+.content-highlight {
+  background: #387cb1;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(42, 92, 130, 0.3);
+}
+
+.content-highlight p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.content-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #2a5c82;
+}
+
+.content-section h4 {
+  color: #2a5c82;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.content-warning {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(255, 171, 160, 0.3);
+}
+
+.content-warning h4 {
+  color: #d63031;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.content-warning p {
+  margin: 0;
+  color: #2d3436;
+  font-weight: 500;
+}
+
+.symptoms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.symptom-card {
+  background: linear-gradient(135deg, #e6f3ff 0%, #d1e6f9 100%);
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.symptom-card:hover {
+  transform: translateY(-2px);
+}
+
+.symptom-icon {
+  font-size: 1.5rem;
+}
+
+.treatment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.treatment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, #2a5c82 0%, #3a6d93 100%);
+  color: white;
+}
+
+.treatment-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.treatment-item p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+
+/* Vista móvil - Acordeón */
+.cirrhosis-mobile-accordion {
+  display: none;
+}
+
+.cirrhosis-accordion-item {
+  border: none;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cirrhosis-accordion-header {
+  width: 100%;
+  padding: 1.2rem;
+  background: #2a5c82;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.accordion-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.accordion-icon {
+  font-size: 1.3rem;
+}
+
+.accordion-title {
+  font-weight: 600;
+}
+
+.cirrhosis-accordion-header.active {
+  background: #1e4460;
+}
+
+.cirrhosis-accordion-arrow {
+  transition: transform 0.3s ease;
+  color: white;
+}
+
+.cirrhosis-accordion-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.cirrhosis-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: #fff;
+}
+
+.cirrhosis-accordion-content.active {
+  max-height: 2000px;
+  transition: max-height 0.5s ease-in;
+}
+
+.cirrhosis-accordion-body {
+  padding: 1.5rem;
+}
+
+/* Vista desktop - Tabs */
+.cirrhosis-desktop-tabs {
+  display: block;
+}
+
+.cirrhosis-tabs-header {
+  display: flex;
+  border-bottom: 2px solid #333;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  justify-content: center;
+  padding-bottom: 5px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cirrhosis-tab-button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  border-bottom: 5px solid transparent;
+  background-color: transparent;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #2b3133;
+  flex-shrink: 0;
+  outline: none;
+  white-space: nowrap;
+}
+
+.cirrhosis-tab-button:hover {
+  background-color: #e9f2f9;
+  border-bottom-color: #a0a0a0;
+}
+
+.cirrhosis-tab-button.active {
+  color: #2a5c82;
+  border-bottom-color: #2a5c82;
+  font-weight: bold;
+}
+
+.tab-icon {
+  font-size: 1.2em;
+}
+
+.cirrhosis-tab-content {
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 400px;
+}
+
+.cirrhosis-tab-pane {
+  padding-top: 0;
+  opacity: 0;
+  animation: smoothFadeIn 0.4s ease-in-out forwards;
+}
+
+@keyframes smoothFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .liver-cirrhosis-container {
+    padding: 1rem;
+  }
+  .cirrhosis-title {
+    font-size: 1.8rem;
+  }
+  .cirrhosis-mobile-accordion {
+    display: block;
+  }
+  .cirrhosis-desktop-tabs {
+    display: none;
+  }
+  .symptoms-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .liver-cirrhosis-container {
+    padding: 0.5rem;
+  }
+  .cirrhosis-title {
+    font-size: 1.5rem;
+  }
+  .cirrhosis-toggle-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cirrhosis-toggle-button {
+    width: 100%;
+    max-width: none;
+  }
+}
