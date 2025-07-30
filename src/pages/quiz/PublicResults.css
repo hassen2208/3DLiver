@@ -409,3 +409,80 @@
     font-size: 1rem;
   }
 }
+
+/* 3D Podium Styles */
+.podium-3d-container {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.podium-legend {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  border: 1px solid rgba(245, 177, 76, 0.3);
+  margin-top: 1rem;
+}
+
+.podium-legend h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #f5b14c;
+}
+
+.podium-legend p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.empty-podium {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 3rem 2rem;
+  text-align: center;
+  border: 2px dashed rgba(245, 177, 76, 0.5);
+}
+
+.empty-podium p {
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Remaining Leaderboard */
+.remaining-leaderboard {
+  margin-top: 2rem;
+}
+
+.remaining-leaderboard h4 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  color: #f5b14c;
+}
+
+/* Responsive Design for 3D Podium */
+@media (max-width: 768px) {
+  .podium-3d-container canvas {
+    height: 300px !important;
+  }
+  
+  .podium-legend {
+    padding: 0.8rem 1.5rem;
+  }
+  
+  .podium-legend h4 {
+    font-size: 1rem;
+  }
+  
+  .podium-legend p {
+    font-size: 0.8rem;
+  }
+}
